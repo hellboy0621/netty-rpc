@@ -17,7 +17,7 @@ import java.lang.reflect.Proxy;
  * @author daniel
  * @date 2021-06-05
  */
-@Component
+//@Component
 public class JdkProxy implements InvocationHandler, BeanPostProcessor {
 
     private Field target;
