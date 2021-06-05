@@ -7,4 +7,5 @@ package com.xtransformers.rpc;
 public class Constants {
     public static final int port = 8080;
     public static String weight = "1";
+    public static String SERVER_PATH = "/netty";
 }

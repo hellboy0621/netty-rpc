@@ -68,7 +68,9 @@ public class ServerWatcher implements CuratorWatcher {
                     client.create().creatingParentsIfNeeded()
                             .withMode(CreateMode.PERSISTENT)
                             .forPath(NettyServer.SERVER_PATH, "0".getBytes());
-                    // 构建临时节点 127.0.0.1#8080#1#0000000000
+                    // 构建临时节点 ip#port#weight#id
+                    // 127.0.0.1#8080#1#0000000000
+                    // 127.0.0.1#8080#1#0000000001
                     client.create().withMode(CreateMode.EPHEMERAL_SEQUENTIAL)
                             .forPath(NettyServer.SERVER_PATH + "/" + netAddress.getHostAddress() + "#"
                                     + Constants.port + "#" + Constants.weight + "#");
