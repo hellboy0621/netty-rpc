@@ -12,9 +12,13 @@ public class ApplicationMain {
 
     public static void main(String[] args) {
         try {
-            // 只扫描服务端用到的包路径
+            // 此处扫描包不包含代理类的包
+            // 只包含 service、监听器的包
             AnnotationConfigApplicationContext context =
-                    new AnnotationConfigApplicationContext("com.xtransformers.rpc");
+                    new AnnotationConfigApplicationContext(
+                            "com.xtransformers.rpc.controller",
+                            "com.xtransformers.rpc.spring",
+                            "com.xtransformers.rpc.service");
 
             // 增加关闭 JVM 的钩子
             Runtime.getRuntime().addShutdownHook(new Thread() {

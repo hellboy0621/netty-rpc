@@ -67,6 +67,18 @@ public class NettyClient {
         }
     }
 
+    public static Object sendRequest(RequestFuture request) throws Exception {
+        try {
+            String requestStr = JSONObject.toJSONString(request);
+            ChannelFuture future = ChannelFutureManager.get();
+            future.channel().writeAndFlush(requestStr);
+            return request.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     public static void main(String[] args) throws Exception {
         NettyClient client = new NettyClient();
         for (int i = 0; i < 10; i++) {

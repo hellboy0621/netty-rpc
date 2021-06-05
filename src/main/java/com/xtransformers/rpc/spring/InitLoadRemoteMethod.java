@@ -6,7 +6,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -23,23 +22,20 @@ public class InitLoadRemoteMethod implements ApplicationListener<ContextRefreshe
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        // 从 Spring 容器中获取标有 @Controller 注解的对象
+        // 从 Spring 容器中获取标有 @Remote 注解的对象
         Map<String, Object> controllerBeans = contextRefreshedEvent.getApplicationContext()
-                .getBeansWithAnnotation(Controller.class);
+                .getBeansWithAnnotation(Remote.class);
         controllerBeans.forEach((key, bean) -> {
             Method[] methods = bean.getClass().getDeclaredMethods();
             for (Method method : methods) {
-                // 判断方法上是否有 Remote 注解
-                if (method.isAnnotationPresent(Remote.class)) {
-                    Remote remote = method.getAnnotation(Remote.class);
-                    String methodValue = remote.value();
-                    Mediator.MethodBean methodBean = new Mediator.MethodBean();
-                    methodBean.setBean(bean);
-                    methodBean.setMethod(method);
-                    // @Remote 注解里的值作为key
-                    Mediator.methodBeans.put(methodValue, methodBean);
-                }
-
+                String methodValue = bean.getClass().getInterfaces()[0].getName()
+                        + "."
+                        + method.getName();
+                Mediator.MethodBean methodBean = new Mediator.MethodBean();
+                methodBean.setBean(bean);
+                methodBean.setMethod(method);
+                // 把 接口名+方法名 作为 key
+                Mediator.methodBeans.put(methodValue, methodBean);
             }
         });
     }
