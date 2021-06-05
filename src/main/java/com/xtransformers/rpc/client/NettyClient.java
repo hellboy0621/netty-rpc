@@ -78,12 +78,4 @@ public class NettyClient {
             throw e;
         }
     }
-
-    public static void main(String[] args) throws Exception {
-        NettyClient client = new NettyClient();
-        for (int i = 0; i < 10; i++) {
-            Object result = client.sendRequest("Hello:" + i, "getUserNameById");
-            System.out.println(result);
-        }
-    }
 }

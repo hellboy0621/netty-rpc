@@ -1,6 +1,7 @@
 package com.xtransformers.rpc.test;
 
 import com.xtransformers.rpc.controller.LoginController;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -20,5 +21,6 @@ public class TestProxyRpc {
         LoginController loginController = context.getBean(LoginController.class);
         Object result = loginController.getUserByName("Smith");
         System.out.println(result);
+        Assert.assertEquals("server response ok", result);
     }
 }

@@ -30,10 +30,6 @@ public class NettyServer {
 
     public static final String SERVER_PATH = "/netty";
 
-    public static void main(String[] args) {
-        start();
-    }
-
     public static void start() {
         /**
          * Boss 线程组 启动一条线程，用来监听 OP_ACCEPT 事件
@@ -66,7 +62,7 @@ public class NettyServer {
                              * HeadContext - write
                              *
                              * 解码器执行顺序从上往下
-                             * 编码期执行顺序从下往上
+                             * 编码器执行顺序从下往上
                              */
                             socketChannel.pipeline().addLast(new ServerHandler());
                             socketChannel.pipeline().addLast(new LengthFieldPrepender(4, false));
@@ -91,8 +87,14 @@ public class NettyServer {
             }
             // 构建临时节点 127.0.0.1#8080#1#00000
             client.create().withMode(CreateMode.EPHEMERAL_SEQUENTIAL)
-                    .forPath(SERVER_PATH + "/" + netAddress.getHostAddress() + "#"
-                            + port + "#" + weight + "#");
+                    .forPath(SERVER_PATH
+                            + "/"
+                            + netAddress.getHostAddress()
+                            + "#"
+                            + port
+                            + "#"
+                            + weight
+                            + "#");
             // 在服务端加上 zk 的监听，以防 Session 中断导致临时节点丢失
             ServerWatcher.serverKey = netAddress.getHostAddress() + port
                     + Constants.weight;
